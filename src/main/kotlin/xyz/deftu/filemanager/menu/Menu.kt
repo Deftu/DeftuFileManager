@@ -1,13 +1,10 @@
 package xyz.deftu.filemanager.menu
 
 import java.awt.*
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import java.awt.event.WindowEvent
-import java.awt.event.WindowListener
+import java.awt.event.*
 import java.awt.geom.RoundRectangle2D
-import java.net.URI
 import javax.swing.*
+import javax.swing.border.Border
 
 class Menu : JFrame(
     "File Manager"
@@ -56,7 +53,7 @@ class Menu : JFrame(
 
         //title label, should be fine
         titleLabel.foreground = textColor
-        titleLabel.font = resourceLoader.header2Font
+        titleLabel.font = resourceLoader.header2Font.deriveFont(Font.BOLD)
         titleLabel.horizontalAlignment = JLabel.CENTER
 
         outputText.foreground = textColor
@@ -70,8 +67,13 @@ class Menu : JFrame(
         outputArea.border = BorderFactory.createEmptyBorder()
         outputArea.viewport.isOpaque = false
         outputArea.viewport.add(outputText)
-        outputArea.viewportBorder = BorderFactory.createEmptyBorder(0, 15, 0, 15)
+        outputArea.viewportBorder = BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(background1, 2, true),
+            BorderFactory.createEmptyBorder(0, 15, 0, 15)
+        )
         outputArea.verticalScrollBar.autoscrolls = true
+        outputArea.verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER
+        outputArea.horizontalScrollBarPolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 
         supportButton.isFocusPainted = false
         supportButton.font = resourceLoader.buttonFont
@@ -80,9 +82,25 @@ class Menu : JFrame(
         supportButton.addActionListener(this)
         //TODO: add this only on hover
         supportButton.border = BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(accentColor, 2, true),
+            BorderFactory.createLineBorder(background1, 2, true),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
         )
+        //make the border red on hover
+        supportButton.addMouseListener(object : MouseAdapter() {
+            override fun mouseEntered(e: MouseEvent) {
+                supportButton.border = BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(accentColor, 2, true),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                )
+            }
+
+            override fun mouseExited(e: MouseEvent) {
+                supportButton.border = BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(background1, 2, true),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                )
+            }
+        })
 
         //TODO: make this not goofy
         val space = JLabel(" ")
@@ -97,9 +115,25 @@ class Menu : JFrame(
         closeButton.addActionListener(this)
         //TODO: add this only on hover
         closeButton.border = BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(accentColor, 2, true),
+            BorderFactory.createLineBorder(background1, 2, true),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
         )
+
+        closeButton.addMouseListener(object : MouseAdapter() {
+            override fun mouseEntered(e: MouseEvent) {
+                closeButton.border = BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(accentColor, 2, true),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                )
+            }
+
+            override fun mouseExited(e: MouseEvent) {
+                closeButton.border = BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(background1, 2, true),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                )
+            }
+        })
 
         // Setup rows | Works!
         titleRow.background = background1
@@ -113,11 +147,12 @@ class Menu : JFrame(
 
         outputRow.background = background1
         outputRow.minimumSize = Dimension(width, 190)
-        outputRow.layout = GridLayout(1, 1)
+        outputRow.size = Dimension(width, 190)
+        outputRow.layout = BorderLayout()
         outputRow.add(outputArea)
 
         actionRow.background = background1
-        actionRow.minimumSize = Dimension(width, 80)
+        actionRow.minimumSize = Dimension(width, 40)
         actionRow.layout = FlowLayout(FlowLayout.CENTER, 10, 0)
         // this make sthe buttons move down
         actionRow.border = BorderFactory.createEmptyBorder(height + 60, 0, 10, 0)
@@ -144,6 +179,7 @@ class Menu : JFrame(
         add(actionRow)
 
         isVisible = true
+        updateOutputText()
     }
 
     private fun updateOutputText() {
@@ -170,7 +206,8 @@ class Menu : JFrame(
         when (e.source) {
             supportButton -> {
                 if (support == null) return
-                Desktop.getDesktop().browse(URI.create(support!!))
+                //Desktop.getDesktop().browse(URI.create(support!!))
+                handleMoved("uwu")
             }
 
             closeButton -> {
