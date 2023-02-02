@@ -1,3 +1,4 @@
+package xyz.deftu.filemanager.menu
 
 import java.awt.*
 import java.awt.event.ActionEvent
@@ -5,6 +6,7 @@ import java.awt.event.ActionListener
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.awt.geom.RoundRectangle2D
+import java.net.URI
 import javax.swing.*
 
 class Menu : JFrame(
