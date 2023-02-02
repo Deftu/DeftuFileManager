@@ -23,8 +23,8 @@ class MenuResourceLoader {
 
     fun initialize() {
         try {
-            outfitFont = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Outfit.ttf"))
-            manropeFont = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Manrope.ttf"))
+            outfitFont = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/fonts/Outfit.ttf"))
+            manropeFont = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/fonts/Manrope.ttf"))
 
             headerFont = manropeFont.deriveFont(50f).deriveFont(mapOf(TextAttribute.WEIGHT to TextAttribute.WEIGHT_SEMIBOLD))
             header2Font = manropeFont.deriveFont(40f).deriveFont(mapOf(TextAttribute.WEIGHT to TextAttribute.WEIGHT_SEMIBOLD))

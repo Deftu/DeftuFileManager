@@ -1,8 +1,10 @@
 package xyz.deftu.filemanager
 
+import org.slf4j.LoggerFactory
 import xyz.deftu.filemanager.menu.Menu
 import java.io.File
 
+val logger = LoggerFactory.getLogger("FileManager")
 const val ACCENT = 0xC91212
 
 fun main(args: Array<String>) {
@@ -29,13 +31,13 @@ fun main(args: Array<String>) {
     for (pair in move) {
         val toMove = File(pair.first)
         if (!validateFile(toMove)) {
-            // TODO: Warn
+            logger.warn("File ${toMove.absolutePath} is not valid, skipping")
             continue
         }
 
         val destination = File(pair.second)
         if (!validateFile(destination)) {
-            // TODO: Warn
+            logger.warn("File ${destination.absolutePath} is not valid, skipping")
             continue
         }
 
@@ -43,13 +45,13 @@ fun main(args: Array<String>) {
         if (!destination.exists()) {
             destination.mkdirs()
         } else if (!destination.isDirectory) {
-            // TODO: Warn
+            logger.warn("File ${destination.absolutePath} is not a directory, skipping")
             continue
         }
 
         // Move the file
         if (!toMove.renameTo(File(destination, toMove.name))) {
-            // TODO: Warn
+            logger.warn("Failed to move file ${toMove.absolutePath} to ${destination.absolutePath}, skipping")
         } else menu.handleMoved(toMove.name)
     }
 
@@ -57,12 +59,12 @@ fun main(args: Array<String>) {
     for (file in delete) {
         val toDelete = File(file)
         if (!validateFile(toDelete)) {
-            // TODO: Warn
+            logger.warn("File ${toDelete.absolutePath} is not valid, skipping")
             continue
         }
 
         if (!toDelete.deleteAccordingly()) {
-            // TODO: Warn
+            logger.warn("Failed to delete file ${toDelete.absolutePath}, skipping")
         } else menu.handleDeleted(toDelete.name)
     }
 

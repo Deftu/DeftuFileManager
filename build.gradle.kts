@@ -1,18 +1,20 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
+    java
+    kotlin("jvm") version("1.6.21")
+    val dgt = "1.4.1"
+    id("xyz.deftu.gradle.tools") version(dgt)
+    id("xyz.deftu.gradle.tools.blossom") version(dgt)
+    id("xyz.deftu.gradle.tools.publishing") version(dgt)
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+dependencies {
+    // Logging
+    implementation("org.slf4j:slf4j-api:${libs.versions.slf4j.get()}")
+    implementation("org.slf4j:slf4j-simple:${libs.versions.slf4j.get()}")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain(8)
+publishing {
+    repositories {
+        mavenLocal()
+    }
 }
